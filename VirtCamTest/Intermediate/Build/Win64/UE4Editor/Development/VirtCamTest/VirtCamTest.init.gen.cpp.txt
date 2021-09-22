@@ -1,0 +1,3 @@
+C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\Definitions.VirtCamTest.h
+C:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
+C:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h

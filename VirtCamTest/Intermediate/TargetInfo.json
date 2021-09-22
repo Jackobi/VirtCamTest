@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "VirtCamTest",
+			"Path": "C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\VirtCamTest\\Source\\VirtCamTest.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "VirtCamTestEditor",
+			"Path": "C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\VirtCamTest\\Source\\VirtCamTestEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

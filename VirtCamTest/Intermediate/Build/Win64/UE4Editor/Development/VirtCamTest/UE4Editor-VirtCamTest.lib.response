@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-VirtCamTest.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\VirtCamTestEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\MyActor.cpp.obj"
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\VirtCamTest.cpp.obj"
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\MyActor.gen.cpp.obj"
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\VirtCamTest.init.gen.cpp.obj"
+"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\Default.rc2.res"
+/OUT:"C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\UE4Editor-VirtCamTest.lib"
+/INCLUDE:IMPLEMENT_MODULE_VirtCamTest

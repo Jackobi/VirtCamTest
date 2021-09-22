@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\VirtCamTest.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{07217121-DAB6-4138-94D3-B6201A4B9E1B}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\VirtCamTest.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\VirtCamTestEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{560F8FF8-EA7C-42F8-B855-9286E81AF61E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultLightmass.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultVirtualProductionUtilities.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Config\Windows">
+      <UniqueIdentifier>{D1EA5A87-B864-4404-8D34-21B50461D978}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Windows\WindowsEngine.ini">
+      <Filter>Config\Windows</Filter>
+    </None>
+    <Filter Include="Source\VirtCamTest">
+      <UniqueIdentifier>{7194067C-B403-4912-8DB4-524BB9738E9E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\VirtCamTest\VirtCamTest.Build.cs">
+      <Filter>Source\VirtCamTest</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\VirtCamTest\VirtCamTest.cpp">
+      <Filter>Source\VirtCamTest</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\VirtCamTest\VirtCamTest.h">
+      <Filter>Source\VirtCamTest</Filter>
+    </ClInclude>
+    <Filter Include="Source\VirtCamTest\Private">
+      <UniqueIdentifier>{9B111BC2-B597-45AC-AE1D-808D9D672AE6}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\VirtCamTest\Private\MyActor.cpp">
+      <Filter>Source\VirtCamTest\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\VirtCamTest\Public">
+      <UniqueIdentifier>{AC45D883-9EF5-4A35-A7C2-F5F8608565B2}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\VirtCamTest\Public\MyActor.h">
+      <Filter>Source\VirtCamTest\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

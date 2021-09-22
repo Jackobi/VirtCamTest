@@ -1,0 +1,3 @@
+C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Development\VirtCamTest\Definitions.VirtCamTest.h
+C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Source\VirtCamTest\Public\MyActor.h
+C:\Users\User\Documents\GitHub\VirtCamTest\VirtCamTest\Intermediate\Build\Win64\UE4Editor\Inc\VirtCamTest\MyActor.generated.h
