@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.RemoteCameraUtilities.cpp.obj": [
+			"RemoteCameraUserWidget.cpp.obj",
+			"RemoteCameraUtilities.cpp.obj"
+		],
+		"Module.RemoteCameraUtilities.gen.cpp.obj": [
+			"RemoteCameraUserWidget.gen.cpp.obj",
+			"RemoteCameraUtilities.init.gen.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-RemoteSessionTests.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\RemoteSessionTestsEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\UE4Editor\Development\RemoteSessionTests\RemoteSessionTests.cpp.obj"
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\UE4Editor\Development\RemoteSessionTests\Default.rc2.res"
+/OUT:"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\UE4Editor\Development\RemoteSessionTests\UE4Editor-RemoteSessionTests.lib"
+/INCLUDE:IMPLEMENT_MODULE_RemoteSessionTests

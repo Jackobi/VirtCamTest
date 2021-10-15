@@ -1,0 +1,14 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-RemoteCameraCore.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\RemoteSessionTestsEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Plugins\RemoteCamera\Intermediate\Build\Win64\UE4Editor\Development\RemoteCameraCore\Module.RemoteCameraCore.cpp.obj"
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Plugins\RemoteCamera\Intermediate\Build\Win64\UE4Editor\Development\RemoteCameraCore\Module.RemoteCameraCore.gen.cpp.obj"
+"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Plugins\RemoteCamera\Intermediate\Build\Win64\UE4Editor\Development\RemoteCameraCore\Default.rc2.res"
+/OUT:"C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Plugins\RemoteCamera\Intermediate\Build\Win64\UE4Editor\Development\RemoteCameraCore\UE4Editor-RemoteCameraCore.lib"
+/INCLUDE:IMPLEMENT_MODULE_RemoteCameraCore

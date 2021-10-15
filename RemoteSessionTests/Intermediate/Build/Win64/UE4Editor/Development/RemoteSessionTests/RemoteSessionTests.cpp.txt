@@ -1,0 +1,2 @@
+C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Intermediate\Build\Win64\UE4Editor\Development\RemoteSessionTests\Definitions.RemoteSessionTests.h
+C:\Users\User\Documents\Unreal Projects\RemoteSessionTests\Source\RemoteSessionTests\RemoteSessionTests.h

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "RemoteSessionTests",
+			"Path": "C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTests.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "RemoteSessionTestsEditor",
+			"Path": "C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTestsEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
