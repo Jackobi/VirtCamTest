@@ -1,8 +1,0 @@
-{
-	"BuildId": "14830424",
-	"Modules": 
-	{
-		"RemoteCameraCore": "UE4Editor-RemoteCameraCore-Win64-DebugGame.dll",
-		"RemoteCameraUtilities": "UE4Editor-RemoteCameraUtilities-Win64-DebugGame.dll"
-	}
-}

@@ -1,10 +1,10 @@
 {
 	"SourceFiles": [
-		"C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTests\\RemoteSessionTests.Build.cs",
-		"C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Plugins\\RemoteCamera\\Source\\RemoteCameraCore\\RemoteCameraCore.Build.cs",
-		"C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Plugins\\RemoteCamera\\Source\\RemoteCameraUtilities\\RemoteCameraUtilities.Build.cs",
-		"C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTests.Target.cs",
-		"C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTestsEditor.Target.cs"
+		"C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Source\\RemoteSessionTests\\RemoteSessionTests.Build.cs",
+		"C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Plugins\\RemoteCamera\\Source\\RemoteCameraCore\\RemoteCameraCore.Build.cs",
+		"C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Plugins\\RemoteCamera\\Source\\RemoteCameraUtilities\\RemoteCameraUtilities.Build.cs",
+		"C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Source\\RemoteSessionTests.Target.cs",
+		"C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Source\\RemoteSessionTestsEditor.Target.cs"
 	],
 	"EngineVersion": "4.26.2"
 }

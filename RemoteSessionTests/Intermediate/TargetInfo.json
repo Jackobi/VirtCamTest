@@ -2,12 +2,12 @@
 	"Targets": [
 		{
 			"Name": "RemoteSessionTests",
-			"Path": "C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTests.Target.cs",
+			"Path": "C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Source\\RemoteSessionTests.Target.cs",
 			"Type": "Game"
 		},
 		{
 			"Name": "RemoteSessionTestsEditor",
-			"Path": "C:\\Users\\User\\Documents\\Unreal Projects\\RemoteSessionTests\\Source\\RemoteSessionTestsEditor.Target.cs",
+			"Path": "C:\\Users\\User\\Documents\\GitHub\\VirtCamTest\\RemoteSessionTests\\Source\\RemoteSessionTestsEditor.Target.cs",
 			"Type": "Editor"
 		}
 	]

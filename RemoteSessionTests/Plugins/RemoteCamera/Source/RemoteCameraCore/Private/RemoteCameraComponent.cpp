@@ -853,9 +853,7 @@ void URemoteCameraComponent::SendCameraDataViaMultiUser()
 bool URemoteCameraComponent::IsCameraInProductionRole() const
 {
 #if WITH_EDITOR
-	UVPSettings* Settings = UVPSettings::GetVPSettings();
-	//URemoteCameraSettings* Settings = URemoteCameraSettings::GetRemoteCameraSettings();
-	
+	UVPSettings* Settings = UVPSettings::GetVPSettings();	
 	// We are in a valid camera role if the user has not assigned a role or the current VPSettings role matches the
 	// assigned role.
 	//
