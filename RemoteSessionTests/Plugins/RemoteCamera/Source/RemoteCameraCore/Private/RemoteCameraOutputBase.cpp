@@ -124,7 +124,7 @@ void URemoteCameraOutputBase::CreateUMG()
 		return;
 	}
 
-	UMGWidget = NewObject<URemoteCameraUserWidget>(this, URemoteCameraUserWidget::StaticClass());
+	UMGWidget = NewObject<UVPFullScreenUserWidget>(this, UVPFullScreenUserWidget::StaticClass());
 	UMGWidget->SetDisplayTypes(DisplayType, DisplayType, DisplayType);
 	UMGWidget->PostProcessDisplayType.bReceiveHardwareInput = true;
 

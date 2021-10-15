@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UnrealClient.h"
-#include "RemoteCameraUserWidget.h"
+//#include "RemoteCameraUserWidget.h"
+#include "VPUtilities/Public/VPFullScreenUserWidget.h"
 #include "CineCameraComponent.h"
 
 #include "RemoteCameraOutputBase.generated.h"
@@ -83,7 +84,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Output")
 		FIntPoint OverrideResolution = { 2048, 1536 };
 
-	URemoteCameraUserWidget* GetUMGWidget() { return UMGWidget; };
+	UVPFullScreenUserWidget* GetUMGWidget() { return UMGWidget; };
+	//URemoteCameraUserWidget* GetUMGWidget() { return UMGWidget; };
 
 	/** Temporarily disable the output.  Caller must eventually call RestoreOutput. */
 	void SuspendOutput()
@@ -113,7 +115,7 @@ protected:
 	UPROPERTY(Transient)
 		bool bInitialized = false;
 
-	ERCWidgetDisplayType DisplayType = ERCWidgetDisplayType::PostProcess;
+	EVPWidgetDisplayType DisplayType = EVPWidgetDisplayType::PostProcess;
 
 	virtual void CreateUMG();
 
@@ -131,7 +133,9 @@ protected:
 #endif
 
 	UPROPERTY(Transient)
-		URemoteCameraUserWidget* UMGWidget = nullptr;
+		UVPFullScreenUserWidget* UMGWidget = nullptr;
+	//UPROPERTY(Transient)
+	//	URemoteCameraUserWidget* UMGWidget = nullptr;
 
 private:
 	void NotifyWidgetOfComponentChange() const;

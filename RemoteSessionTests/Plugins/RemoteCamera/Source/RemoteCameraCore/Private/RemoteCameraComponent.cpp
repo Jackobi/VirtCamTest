@@ -362,6 +362,7 @@ void URemoteCameraComponent::Update()
 	{
 		return;
 	}
+
 	// If requested then disable the component if we're spawned by sequencer
 	if (bDisableComponentWhenSpawnedBySequencer)
 	{
@@ -382,42 +383,46 @@ void URemoteCameraComponent::Update()
 		return;
 	}
 
-	// Ensure the actor lock reflects the state of the lock property
-	// This is needed as UActorComponent::ConsolidatedPostEditChange will cause the component to be reconstructed on PostEditChange
-	// if the component is inherited
-	if (bLockViewportToCamera != bIsLockedToViewport)
-	{
-		UpdateActorLock();
-	}
-
 	const float DeltaTime = GetDeltaTime();
 
-	FLiveLinkCameraBlueprintData InitialLiveLinkData;
-	GetLiveLinkDataForCurrentFrame(InitialLiveLinkData);
-	
-
-	CopyLiveLinkDataToCamera(InitialLiveLinkData, CameraComponent);
-
-	/*
-	for (FModifierStackEntry& ModifierStackEntry : ModifierStack)
+	if (CanEvaluateModifierStack())
 	{
-		if (!ModifierStackEntry.bEnabled)
+		// Ensure the actor lock reflects the state of the lock property
+		// This is needed as UActorComponent::ConsolidatedPostEditChange will cause the component to be reconstructed on PostEditChange
+		// if the component is inherited
+		if (bLockViewportToCamera != bIsLockedToViewport)
 		{
-			continue;
+			UpdateActorLock();
 		}
 
-		if (UVCamModifier* Modifier = ModifierStackEntry.GeneratedModifier)
+		FLiveLinkCameraBlueprintData InitialLiveLinkData;
+		GetLiveLinkDataForCurrentFrame(InitialLiveLinkData);
+
+		CopyLiveLinkDataToCamera(InitialLiveLinkData, CameraComponent);
+
+		/*
+		for (FModifierStackEntry& ModifierStackEntry : ModifierStack)
 		{
-			// Initialize the Modifier if required
-			if (Modifier->DoesRequireInitialization())
+			if (!ModifierStackEntry.bEnabled)
 			{
-				Modifier->Initialize(ModifierContext);
+				continue;
 			}
 
-			Modifier->Apply(ModifierContext, CameraComponent, DeltaTime);
+			if (UVCamModifier* Modifier = ModifierStackEntry.GeneratedModifier)
+			{
+				// Initialize the Modifier if required
+				if (Modifier->DoesRequireInitialization())
+				{
+					Modifier->Initialize(ModifierContext);
+				}
+
+				Modifier->Apply(ModifierContext, CameraComponent, DeltaTime);
+			}
 		}
-	}
-	*/
+		*/
+
+		SendCameraDataViaMultiUser();
+	}	
 
 	for (URemoteCameraOutputBase* Provider : OutputProviders)
 	{
@@ -863,6 +868,11 @@ bool URemoteCameraComponent::IsCameraInProductionRole() const
 #endif
 }
 
+bool URemoteCameraComponent::CanEvaluateModifierStack() const
+{
+	return !IsMultiUserSession() || (IsMultiUserSession() && IsCameraInProductionRole());
+}
+
 bool URemoteCameraComponent::IsMultiUserSession() const
 {
 #if WITH_EDITOR
@@ -873,6 +883,58 @@ bool URemoteCameraComponent::IsMultiUserSession() const
 }
 
 #if WITH_EDITOR
+FLevelEditorViewportClient* URemoteCameraComponent::GetTargetLevelViewportClient() const
+{
+	FLevelEditorViewportClient* OutClient = nullptr;
+
+	TSharedPtr<SLevelViewport> LevelViewport = GetTargetLevelViewport();
+	if (LevelViewport.IsValid())
+	{
+		OutClient = &LevelViewport->GetLevelViewportClient();
+	}
+
+	return OutClient;
+}
+
+TSharedPtr<SLevelViewport> URemoteCameraComponent::GetTargetLevelViewport() const
+{
+	TSharedPtr<SLevelViewport> OutLevelViewport = nullptr;
+
+	if (TargetViewport == ERCTargetViewportID::CurrentlySelected)
+	{
+		if (FLevelEditorModule* LevelEditorModule = FModuleManager::GetModulePtr<FLevelEditorModule>(RemoteCameraComponent::LevelEditorName))
+		{
+			OutLevelViewport = LevelEditorModule->GetFirstActiveLevelViewport();
+		}
+	}
+	else
+	{
+		if (GEditor)
+		{
+			for (FLevelEditorViewportClient* Client : GEditor->GetLevelViewportClients())
+			{
+				// We only care about the fully rendered 3D viewport...seems like there should be a better way to check for this
+				if (!Client->IsOrtho())
+				{
+					TSharedPtr<SLevelViewport> LevelViewport = StaticCastSharedPtr<SLevelViewport>(Client->GetEditorViewportWidget());
+					if (LevelViewport.IsValid())
+					{
+						const FString WantedViewportString = FString::Printf(TEXT("Viewport %d.Viewport"), (int32)TargetViewport);
+						const FString ViewportConfigKey = LevelViewport->GetConfigKey().ToString();
+						if (ViewportConfigKey.Contains(*WantedViewportString, ESearchCase::CaseSensitive, ESearchDir::FromStart))
+						{
+							OutLevelViewport = LevelViewport;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return OutLevelViewport;
+}
+
 void URemoteCameraComponent::OnMapChanged(UWorld* World, EMapChangeType ChangeType)
 {
 	UWorld* ComponentWorld = GetWorld();
@@ -934,27 +996,6 @@ void URemoteCameraComponent::OnEndPIE(const bool bInIsSimulating)
 	}
 }
 
-void URemoteCameraComponent::HandleCameraComponentEventData(const FConcertSessionContext& InEventContext, const FMultiUserRemoteCameraComponentEvent& InEvent)
-{
-	if (InEvent.TrackingName == GetNameForMultiUser())
-	{
-		// If the role matches the currently defined VP Role then we should not update the camera
-		// data for this actor and the modifier stack is the "owner"
-		//
-		if (!IsCameraInProductionRole())
-		{
-			InEvent.CameraData.ApplyTo(GetOwner(), GetTargetCamera());
-			if (bDisableOutputOnMultiUserReceiver)
-			{
-				for (URemoteCameraOutputBase* Provider : OutputProviders)
-				{
-					Provider->SuspendOutput();
-				}
-			}
-		}
-	}
-}
-
 void URemoteCameraComponent::SessionStartup(TSharedRef<IConcertClientSession> InSession)
 {
 	WeakSession = InSession;
@@ -981,6 +1022,27 @@ void URemoteCameraComponent::SessionShutdown(TSharedRef<IConcertClientSession> I
 FString URemoteCameraComponent::GetNameForMultiUser() const
 {
 	return GetOwner()->GetPathName();
+}
+
+void URemoteCameraComponent::HandleCameraComponentEventData(const FConcertSessionContext& InEventContext, const FMultiUserRemoteCameraComponentEvent& InEvent)
+{
+	if (InEvent.TrackingName == GetNameForMultiUser())
+	{
+		// If the role matches the currently defined VP Role then we should not update the camera
+		// data for this actor and the modifier stack is the "owner"
+		//
+		if (!IsCameraInProductionRole())
+		{
+			InEvent.CameraData.ApplyTo(GetOwner(), GetTargetCamera());
+			if (bDisableOutputOnMultiUserReceiver)
+			{
+				for (URemoteCameraOutputBase* Provider : OutputProviders)
+				{
+					Provider->SuspendOutput();
+				}
+			}
+		}
+	}
 }
 
 void URemoteCameraComponent::MultiUserStartup()
@@ -1021,57 +1083,5 @@ void URemoteCameraComponent::MultiUserShutdown()
 			OnSessionShutdownHandle.Reset();
 		}
 	}
-}
-
-FLevelEditorViewportClient* URemoteCameraComponent::GetTargetLevelViewportClient() const
-{
-	FLevelEditorViewportClient* OutClient = nullptr;
-
-	TSharedPtr<SLevelViewport> LevelViewport = GetTargetLevelViewport();
-	if (LevelViewport.IsValid())
-	{
-		OutClient = &LevelViewport->GetLevelViewportClient();
-	}
-
-	return OutClient;
-}
-
-TSharedPtr<SLevelViewport> URemoteCameraComponent::GetTargetLevelViewport() const
-{
-	TSharedPtr<SLevelViewport> OutLevelViewport = nullptr;
-
-	if (TargetViewport == ERCTargetViewportID::CurrentlySelected)
-	{
-		if (FLevelEditorModule* LevelEditorModule = FModuleManager::GetModulePtr<FLevelEditorModule>(RemoteCameraComponent::LevelEditorName))
-		{
-			OutLevelViewport = LevelEditorModule->GetFirstActiveLevelViewport();
-		}
-	}
-	else
-	{
-		if (GEditor)
-		{
-			for (FLevelEditorViewportClient* Client : GEditor->GetLevelViewportClients())
-			{
-				// We only care about the fully rendered 3D viewport...seems like there should be a better way to check for this
-				if (!Client->IsOrtho())
-				{
-					TSharedPtr<SLevelViewport> LevelViewport = StaticCastSharedPtr<SLevelViewport>(Client->GetEditorViewportWidget());
-					if (LevelViewport.IsValid())
-					{
-						const FString WantedViewportString = FString::Printf(TEXT("Viewport %d.Viewport"), (int32)TargetViewport);
-						const FString ViewportConfigKey = LevelViewport->GetConfigKey().ToString();
-						if (ViewportConfigKey.Contains(*WantedViewportString, ESearchCase::CaseSensitive, ESearchDir::FromStart))
-						{
-							OutLevelViewport = LevelViewport;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return OutLevelViewport;
 }
 #endif

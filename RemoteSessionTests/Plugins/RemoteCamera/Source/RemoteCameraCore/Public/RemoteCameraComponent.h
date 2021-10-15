@@ -165,6 +165,8 @@ private:
 
 	bool IsMultiUserSession() const;
 
+	bool CanEvaluateModifierStack() const;
+
 public:
 	/**
 	 * The role of this virtual camera.  If this value is set and the corresponding tag set on the editor matches this value, then this
