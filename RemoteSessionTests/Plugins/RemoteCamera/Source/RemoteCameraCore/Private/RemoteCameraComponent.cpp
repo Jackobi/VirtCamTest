@@ -428,13 +428,24 @@ void URemoteCameraComponent::Update()
 	{
 		if (Provider)
 		{
-			// Initialize the Provider if required
-			if (!Provider->IsInitialized())
+			if (!CanEvaluateModifierStack())
 			{
-				Provider->Initialize();
+				if (Provider->IsInitialized())
+				{
+					Provider->Deinitialize();
+				}
 			}
+			else
+			{
+				// Initialize the Provider if required
+				if (!Provider->IsInitialized())
+				{
+					UE_LOG(LogRemoteCamera, Log, TEXT("Initialized provider"));
+					Provider->Initialize();
+				}
 
-			Provider->Tick(DeltaTime);
+				Provider->Tick(DeltaTime);
+			}
 		}
 	}
 }
@@ -861,7 +872,6 @@ bool URemoteCameraComponent::IsCameraInProductionRole() const
 	UVPSettings* Settings = UVPSettings::GetVPSettings();	
 	// We are in a valid camera role if the user has not assigned a role or the current VPSettings role matches the
 	// assigned role.
-	//
 	return !Role.IsValid() || Settings->GetRoles().HasTag(Role);
 #else
 	return true;
