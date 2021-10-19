@@ -2,6 +2,6 @@
 	"BuildId": "14830424",
 	"Modules": 
 	{
-		"RemoteSessionTests": "UE4Editor-RemoteSessionTests-0001.dll"
+		"RemoteSessionTests": "UE4Editor-RemoteSessionTests.dll"
 	}
 }

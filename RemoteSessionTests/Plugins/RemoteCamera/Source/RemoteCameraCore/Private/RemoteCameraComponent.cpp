@@ -6,7 +6,6 @@
 #include "Roles/LiveLinkCameraRole.h"
 #include "Roles/LiveLinkTransformRole.h"
 //#include "RemoteCameraSettings.h"
-#include "VPUtilities/Public/VPSettings.h"
 
 #if WITH_EDITOR
 //#include "Editor.h"
@@ -20,6 +19,7 @@
 #include "IConcertSession.h"
 #include "IConcertSyncClient.h"
 #include "IMultiUserClientModule.h"
+#include "VPUtilities/Public/VPSettings.h"
 #endif
 
 namespace RemoteCameraComponent
@@ -42,7 +42,7 @@ URemoteCameraComponent::URemoteCameraComponent()
 		}
 		else
 		{
-			UE_LOG(LogRemoteCamera, Error, TEXT("LiveLink is not available. Some VCamCore features may not work as expected"));
+			UE_LOG(LogRemoteCamera, Error, TEXT("LiveLink is not available. Some RemoteCamera features may not work as expected"));
 		}
 
 #if WITH_EDITOR
@@ -147,24 +147,12 @@ bool URemoteCameraComponent::CanUpdate() const
 		// Apparently, we should be using OnRegister/OnUnregister() instead of doing everything in the constructor, but it was throwing GC errors when trying that
 		if (World->WorldType != EWorldType::Inactive)
 		{
-			//Deprecated implementation
-			//if (this->GetOwner()->GetComponentsByClass(UCineCameraComponent::StaticClass()).Num() > 0)
-
-			//TArray<UCineCameraComponent*> CameraComponents;
 			TArray<UCineCameraComponent*> CameraComponents;
 			GetOwner()->GetComponents(CameraComponents);
 			if (CameraComponents.Num() > 0)
 			{
 				return true;
 			}
-			//if (const USceneComponent* ParentComponent = GetAttachParent())
-			//{
-			//	if (ParentComponent->IsA<UCineCameraComponent>())
-			//	{
-			//		// Component is valid to use if it is enabled, has a parent and that parent is a CineCamera derived component
-			//		return true;
-			//	}
-			//}
 		}
 	}
 	return false;
@@ -389,7 +377,6 @@ void URemoteCameraComponent::Update()
 
 	if (CanEvaluateModifierStack())
 	{
-		UE_LOG(LogRemoteCamera, Log, TEXT("Evaluating modifier stack..."));
 		// Ensure the actor lock reflects the state of the lock property
 		// This is needed as UActorComponent::ConsolidatedPostEditChange will cause the component to be reconstructed on PostEditChange
 		// if the component is inherited
@@ -425,7 +412,7 @@ void URemoteCameraComponent::Update()
 		*/
 
 		SendCameraDataViaMultiUser();
-	}	
+	}
 
 	for (URemoteCameraOutputBase* Provider : OutputProviders)
 	{
@@ -434,11 +421,10 @@ void URemoteCameraComponent::Update()
 			// Initialize the Provider if required
 			if (!Provider->IsInitialized())
 			{
-				UE_LOG(LogRemoteCamera, Log, TEXT("Initialized provider"));
 				Provider->Initialize();
 			}
 
-			Provider->Tick(DeltaTime);	
+			Provider->Tick(DeltaTime);
 		}
 	}
 }
@@ -549,7 +535,6 @@ float URemoteCameraComponent::GetDeltaTime()
 
 void URemoteCameraComponent::UpdateActorLock()
 {
-
 	if (GetTargetCamera() == nullptr)
 	{
 		UE_LOG(LogRemoteCamera, Warning, TEXT("UpdateActorLock has been called, but there is no valid TargetCamera!"));
@@ -1008,7 +993,6 @@ void URemoteCameraComponent::OnEndPIE(const bool bInIsSimulating)
 
 void URemoteCameraComponent::SessionStartup(TSharedRef<IConcertClientSession> InSession)
 {
-	UE_LOG(LogRemoteCamera, Log, TEXT("Multi-User Session is starting up..."));
 	WeakSession = InSession;
 
 	InSession->RegisterCustomEventHandler<FMultiUserRemoteCameraComponentEvent>(this, &URemoteCameraComponent::HandleCameraComponentEventData);
@@ -1017,7 +1001,6 @@ void URemoteCameraComponent::SessionStartup(TSharedRef<IConcertClientSession> In
 
 void URemoteCameraComponent::SessionShutdown(TSharedRef<IConcertClientSession> InSession)
 {
-	UE_LOG(LogRemoteCamera, Log, TEXT("Multi-User Session is shutting down..."));
 	TSharedPtr<IConcertClientSession> Session = WeakSession.Pin();
 	if (Session.IsValid())
 	{
