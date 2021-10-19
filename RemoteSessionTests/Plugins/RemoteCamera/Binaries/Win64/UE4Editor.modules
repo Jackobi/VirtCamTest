@@ -2,7 +2,7 @@
 	"BuildId": "14830424",
 	"Modules": 
 	{
-		"RemoteCameraCore": "UE4Editor-RemoteCameraCore-0002.dll",
-		"RemoteCameraUtilities": "UE4Editor-RemoteCameraUtilities-0002.dll"
+		"RemoteCameraCore": "UE4Editor-RemoteCameraCore-0001.dll",
+		"RemoteCameraUtilities": "UE4Editor-RemoteCameraUtilities-0001.dll"
 	}
 }

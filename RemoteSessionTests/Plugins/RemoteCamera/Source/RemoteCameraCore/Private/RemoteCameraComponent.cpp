@@ -59,6 +59,7 @@ URemoteCameraComponent::URemoteCameraComponent()
 		{
 			GEditor->OnObjectsReplaced().AddUObject(this, &URemoteCameraComponent::HandleObjectReplaced);
 		}
+		MultiUserStartup();
 #endif
 
 		TArray<UCineCameraComponent*> CameraComponents;
@@ -100,6 +101,7 @@ void URemoteCameraComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 	{
 		GEditor->OnObjectsReplaced().RemoveAll(this);
 	}
+	MultiUserShutdown();
 #endif
 }
 
@@ -387,6 +389,7 @@ void URemoteCameraComponent::Update()
 
 	if (CanEvaluateModifierStack())
 	{
+		UE_LOG(LogRemoteCamera, Log, TEXT("Evaluating modifier stack..."));
 		// Ensure the actor lock reflects the state of the lock property
 		// This is needed as UActorComponent::ConsolidatedPostEditChange will cause the component to be reconstructed on PostEditChange
 		// if the component is inherited
@@ -428,24 +431,14 @@ void URemoteCameraComponent::Update()
 	{
 		if (Provider)
 		{
-			if (!CanEvaluateModifierStack())
+			// Initialize the Provider if required
+			if (!Provider->IsInitialized())
 			{
-				if (Provider->IsInitialized())
-				{
-					Provider->Deinitialize();
-				}
+				UE_LOG(LogRemoteCamera, Log, TEXT("Initialized provider"));
+				Provider->Initialize();
 			}
-			else
-			{
-				// Initialize the Provider if required
-				if (!Provider->IsInitialized())
-				{
-					UE_LOG(LogRemoteCamera, Log, TEXT("Initialized provider"));
-					Provider->Initialize();
-				}
 
-				Provider->Tick(DeltaTime);
-			}
+			Provider->Tick(DeltaTime);	
 		}
 	}
 }
@@ -880,7 +873,14 @@ bool URemoteCameraComponent::IsCameraInProductionRole() const
 
 bool URemoteCameraComponent::CanEvaluateModifierStack() const
 {
-	return !IsMultiUserSession() || (IsMultiUserSession() && IsCameraInProductionRole());
+	UE_LOG(LogRemoteCamera, Log, TEXT("Checking can evaluate modifiers..."));
+	if (IsMultiUserSession())
+	{
+		UE_LOG(LogRemoteCamera, Log, TEXT("Checking production role..."));
+		return IsCameraInProductionRole();
+	}
+	return true;
+	//return !IsMultiUserSession() || (IsMultiUserSession() && IsCameraInProductionRole());
 }
 
 bool URemoteCameraComponent::IsMultiUserSession() const
@@ -1008,6 +1008,7 @@ void URemoteCameraComponent::OnEndPIE(const bool bInIsSimulating)
 
 void URemoteCameraComponent::SessionStartup(TSharedRef<IConcertClientSession> InSession)
 {
+	UE_LOG(LogRemoteCamera, Log, TEXT("Multi-User Session is starting up..."));
 	WeakSession = InSession;
 
 	InSession->RegisterCustomEventHandler<FMultiUserRemoteCameraComponentEvent>(this, &URemoteCameraComponent::HandleCameraComponentEventData);
@@ -1016,6 +1017,7 @@ void URemoteCameraComponent::SessionStartup(TSharedRef<IConcertClientSession> In
 
 void URemoteCameraComponent::SessionShutdown(TSharedRef<IConcertClientSession> InSession)
 {
+	UE_LOG(LogRemoteCamera, Log, TEXT("Multi-User Session is shutting down..."));
 	TSharedPtr<IConcertClientSession> Session = WeakSession.Pin();
 	if (Session.IsValid())
 	{
@@ -1040,7 +1042,7 @@ void URemoteCameraComponent::HandleCameraComponentEventData(const FConcertSessio
 	{
 		// If the role matches the currently defined VP Role then we should not update the camera
 		// data for this actor and the modifier stack is the "owner"
-		//
+		
 		if (!IsCameraInProductionRole())
 		{
 			InEvent.CameraData.ApplyTo(GetOwner(), GetTargetCamera());
