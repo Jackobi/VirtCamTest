@@ -858,14 +858,7 @@ bool URemoteCameraComponent::IsCameraInProductionRole() const
 
 bool URemoteCameraComponent::CanEvaluateModifierStack() const
 {
-	UE_LOG(LogRemoteCamera, Log, TEXT("Checking can evaluate modifiers..."));
-	if (IsMultiUserSession())
-	{
-		UE_LOG(LogRemoteCamera, Log, TEXT("Checking production role..."));
-		return IsCameraInProductionRole();
-	}
-	return true;
-	//return !IsMultiUserSession() || (IsMultiUserSession() && IsCameraInProductionRole());
+	return !IsMultiUserSession() || (IsMultiUserSession() && IsCameraInProductionRole());
 }
 
 bool URemoteCameraComponent::IsMultiUserSession() const
@@ -1007,7 +1000,10 @@ void URemoteCameraComponent::SessionShutdown(TSharedRef<IConcertClientSession> I
 		Session->UnregisterCustomEventHandler<FMultiUserRemoteCameraComponentEvent>(this);
 		for (URemoteCameraOutputBase* Provider : OutputProviders)
 		{
-			Provider->RestoreOutput();
+			if (Provider->IsValidLowLevel())
+			{
+				Provider->RestoreOutput();
+			}
 		}
 	}
 

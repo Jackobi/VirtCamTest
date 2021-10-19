@@ -101,6 +101,7 @@ void URemoteCameraOutputBase::SetActive(const bool bInIsActive)
 
 void URemoteCameraOutputBase::SetTargetCamera(const UCineCameraComponent* InTargetCamera)
 {
+	UE_LOG(LogRemoteCamera, Log, TEXT("Target camera changed!"));
 	TargetCamera = InTargetCamera;
 
 	NotifyWidgetOfComponentChange();
@@ -115,6 +116,7 @@ void URemoteCameraOutputBase::CreateUMG()
 {
 	if (!UMGClass)
 	{
+		UE_LOG(LogRemoteCamera, Error, TEXT("No UMG Widget class to create widget from!"));
 		return;
 	}
 
@@ -169,6 +171,10 @@ void URemoteCameraOutputBase::DisplayUMG()
 
 		NotifyWidgetOfComponentChange();
 	}
+	else
+	{
+		UE_LOG(LogRemoteCamera, Error, TEXT("No UMG Widget to display - create UMG widget first"));
+	}
 }
 
 void URemoteCameraOutputBase::DestroyUMG()
@@ -178,7 +184,7 @@ void URemoteCameraOutputBase::DestroyUMG()
 		if (UMGWidget->IsDisplayed())
 		{
 			UMGWidget->Hide();
-			UE_LOG(LogRemoteCamera, Log, TEXT("DestrpyUMG widget %s hidden"), *UMGWidget->GetName());
+			UE_LOG(LogRemoteCamera, Log, TEXT("DestroyUMG: widget %s is hidden"), *UMGWidget->GetName());
 		}
 #if WITH_EDITOR
 		UMGWidget->ResetAllTargetViewports();
@@ -234,10 +240,12 @@ TWeakPtr<SWindow> URemoteCameraOutputBase::GetTargetInputWindow() const
 
 void URemoteCameraOutputBase::NotifyWidgetOfComponentChange() const
 {
+	UE_LOG(LogRemoteCamera, Log, TEXT("Notified of component change!"));
+	/*
 	if (UMGWidget && UMGWidget->IsDisplayed())
 	{
 		UUserWidget* DisplayedWidget = UMGWidget->GetWidget();
-		/*
+		
 		if (DisplayedWidget && DisplayedWidget->Implements<UMyModifierInterface>())
 		{
 			if (URemoteCameraComponent* OwningComponent = Cast< URemoteCameraComponent>(this->GetOuter()))
@@ -247,8 +255,9 @@ void URemoteCameraOutputBase::NotifyWidgetOfComponentChange() const
 				IMyModifierInterface::Execute_OnMyRemoteSessionComponentChanged(DisplayedWidget, SessionComponent);
 			}
 		}
-		*/
+		
 	}
+	*/
 }
 
 bool URemoteCameraOutputBase::IsOuterComponentEnabled() const
