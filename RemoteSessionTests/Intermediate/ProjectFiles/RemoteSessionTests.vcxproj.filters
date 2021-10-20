@@ -3,7 +3,7 @@
   <ItemGroup>
     <None Include="..\..\RemoteSessionTests.uproject" />
     <Filter Include="Source">
-      <UniqueIdentifier>{25B6C441-853C-4249-B966-2083510F7480}</UniqueIdentifier>
+      <UniqueIdentifier>{74E3B030-67FE-4B1F-B4A9-C26A7C8188A8}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\RemoteSessionTests.Target.cs">
       <Filter>Source</Filter>
@@ -13,7 +13,7 @@
     </None>
     <None Include="..\..\.gitignore" />
     <Filter Include="Config">
-      <UniqueIdentifier>{E2A3981B-FE4C-4B9A-819B-D19DF53F2918}</UniqueIdentifier>
+      <UniqueIdentifier>{52561A62-ABA6-4CFD-BE63-546E9BC44ED3}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\DefaultEditor.ini">
       <Filter>Config</Filter>
@@ -40,22 +40,22 @@
       <Filter>Config</Filter>
     </None>
     <Filter Include="Config\Windows">
-      <UniqueIdentifier>{1A949307-7A5A-4E12-84F5-E14BB7AC6C46}</UniqueIdentifier>
+      <UniqueIdentifier>{E5E012C5-2295-4E1B-9883-AEC8EAE7180A}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\Windows\WindowsEngine.ini">
       <Filter>Config\Windows</Filter>
     </None>
     <Filter Include="Plugins">
-      <UniqueIdentifier>{F69DBE5C-2453-444D-93BC-6F60F8379FB4}</UniqueIdentifier>
+      <UniqueIdentifier>{FFA5B339-95A9-48E5-A49D-F5FE2531CB17}</UniqueIdentifier>
     </Filter>
     <Filter Include="Plugins\RemoteCamera">
-      <UniqueIdentifier>{E791FC72-CFC0-4D81-A9C9-CAFAE81DA3EF}</UniqueIdentifier>
+      <UniqueIdentifier>{35BC1750-E924-4C59-A40C-62B0BB71F26A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Plugins\RemoteCamera\Source">
-      <UniqueIdentifier>{5E2C2237-A7B2-434D-BE94-378BE2FCEDE7}</UniqueIdentifier>
+      <UniqueIdentifier>{E30764D7-EEB6-4D59-8945-FFA3431F23BB}</UniqueIdentifier>
     </Filter>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraCore">
-      <UniqueIdentifier>{BA6EC50A-41E6-46E9-B3F9-EB008C81CB22}</UniqueIdentifier>
+      <UniqueIdentifier>{D8EDF30C-C94A-47E0-A16F-5BB2E8168FCB}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraCore\RemoteCameraCore.Build.cs">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraCore</Filter>
@@ -67,7 +67,7 @@
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraCore</Filter>
     </ClInclude>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraCore\Private">
-      <UniqueIdentifier>{6A5EB856-18E2-44A8-8249-D79FD9AF2F17}</UniqueIdentifier>
+      <UniqueIdentifier>{706DC1B3-0A92-4FC3-95B0-325D833F94ED}</UniqueIdentifier>
     </Filter>
     <ClCompile Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraCore\Private\RemoteCameraActor.cpp">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraCore\Private</Filter>
@@ -85,7 +85,7 @@
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraCore\Private</Filter>
     </ClCompile>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraCore\Public">
-      <UniqueIdentifier>{0DBCAC5A-67B5-4632-86C7-D90388C85B2D}</UniqueIdentifier>
+      <UniqueIdentifier>{6ADDB2A8-4198-4984-8DB4-0D0256991325}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraCore\Public\RemoteCameraActor.h">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraCore\Public</Filter>
@@ -106,7 +106,7 @@
       <Filter>Plugins\RemoteCamera</Filter>
     </None>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraUtilities">
-      <UniqueIdentifier>{0DB5E4C9-8C5D-4346-8B42-DC05AC1AD452}</UniqueIdentifier>
+      <UniqueIdentifier>{DFD936FE-21C8-4708-B7C3-53930ECCDF19}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraUtilities\RemoteCameraUtilities.Build.cs">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraUtilities</Filter>
@@ -118,19 +118,19 @@
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraUtilities</Filter>
     </ClInclude>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraUtilities\Private">
-      <UniqueIdentifier>{555F2879-E0AA-425A-8D3F-84F8B67EC32B}</UniqueIdentifier>
+      <UniqueIdentifier>{6EEA42F5-C9BB-42E0-8F9B-05ADB961293A}</UniqueIdentifier>
     </Filter>
     <ClCompile Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraUtilities\Private\RemoteCameraUserWidget.cpp">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraUtilities\Private</Filter>
     </ClCompile>
     <Filter Include="Plugins\RemoteCamera\Source\RemoteCameraUtilities\Public">
-      <UniqueIdentifier>{8166E138-5682-4FFD-ACBF-3F9D0280B2DE}</UniqueIdentifier>
+      <UniqueIdentifier>{E6692E69-C071-4F29-B38C-84854C7D4790}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Plugins\RemoteCamera\Source\RemoteCameraUtilities\Public\RemoteCameraUserWidget.h">
       <Filter>Plugins\RemoteCamera\Source\RemoteCameraUtilities\Public</Filter>
     </ClInclude>
     <Filter Include="Source\RemoteSessionTests">
-      <UniqueIdentifier>{51AE7B37-60C8-4C95-9295-0518414405F6}</UniqueIdentifier>
+      <UniqueIdentifier>{C3C0DB28-0FF3-4DB0-9673-A50835EC9005}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\RemoteSessionTests\RemoteSessionTests.Build.cs">
       <Filter>Source\RemoteSessionTests</Filter>

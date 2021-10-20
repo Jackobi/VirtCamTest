@@ -99,7 +99,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{60F90795-1E90-411E-8A50-7ACC51D14436}</ProjectGuid>
+    <ProjectGuid>{35BC3941-1DF5-4D33-9435-F126AD25754A}</ProjectGuid>
     <Keyword>MakeFileProj</Keyword>
     <RootNamespace>RemoteSessionTests</RootNamespace>
     <PlatformToolset>v142</PlatformToolset>
