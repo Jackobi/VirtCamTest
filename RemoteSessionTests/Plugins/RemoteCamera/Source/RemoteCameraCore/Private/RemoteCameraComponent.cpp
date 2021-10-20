@@ -447,7 +447,7 @@ void URemoteCameraComponent::SetEnabled(bool bNewEnabled)
 	{
 		for (URemoteCameraOutputBase* Provider : OutputProviders)
 		{
-			if (Provider)
+			if (Provider->IsValidLowLevel() && !Provider->IsInitialized())
 			{
 				Provider->Initialize();
 			}
