@@ -227,6 +227,7 @@ void URemoteCameraComponent::PreEditChange(FProperty* PropertyThatWillChange)
 		//}
 		else if (PropertyThatWillChangeName == NAME_Enabled)
 		{
+			UE_LOG(LogRemoteCamera, Log, TEXT("Pre-Edit Change: Enabled"));
 			// If the property's owner is a struct (like FModifierStackEntry), act on it in PostEditChangeProperty(), not here
 			if (PropertyThatWillChange->GetOwner<UClass>())
 			{
@@ -261,6 +262,7 @@ void URemoteCameraComponent::PostEditChangeProperty(FPropertyChangedEvent& Prope
 		}
 		else if (PropertyName == NAME_Enabled)
 		{
+			UE_LOG(LogRemoteCamera, Log, TEXT("Post-Edit Change: Enabled"));
 			// Only act here if we are a struct (like FModifierStackEntry)
 			if (!Property->GetOwner<UClass>())
 			{
@@ -431,6 +433,7 @@ void URemoteCameraComponent::Update()
 
 void URemoteCameraComponent::SetEnabled(bool bNewEnabled)
 {
+	UE_LOG(LogRemoteCamera, Log, TEXT("SetEnabled() function"));
 	if (!bNewEnabled)
 	{
 		for (URemoteCameraOutputBase* Provider : OutputProviders)
