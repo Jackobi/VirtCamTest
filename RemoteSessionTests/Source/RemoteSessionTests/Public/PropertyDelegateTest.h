@@ -25,6 +25,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetEnabled, BlueprintSetter = SetEnabled, Category = "Test")
 		bool bEnabled;
+	UPROPERTY(EditAnywhere, Category = "Test")
+		bool bOtherTest;
 		
 protected:
 	// Called when the game starts or when spawned
