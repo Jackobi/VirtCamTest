@@ -1,8 +1,34 @@
 #include "PropertyDelegateTest.h"
 
+#if WITH_EDITOR
+#include "IConcertModule.h"
+#include "IConcertClient.h"
+#include "IConcertSyncClient.h"
+#include "IMultiUserClientModule.h"
+#endif //WITH_EDITOR
+
 APropertyDelegateTest::APropertyDelegateTest()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	//Don't run on class default object!
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+#if WITH_EDITOR
+
+		MultiUserStartup();
+
+#endif //WITH_EDITOR
+	}
+}
+
+void APropertyDelegateTest::BeginDestroy()
+{
+#if WITH_EDITOR
+
+	MultiUserShutdown();
+
+#endif //WITH_EDITOR
 }
 
 void APropertyDelegateTest::SetEnabled(bool bNewEnabled)
@@ -78,5 +104,49 @@ void APropertyDelegateTest::PostEditChangeChainProperty(FPropertyChangedChainEve
 	const FName PropertyName = Property->GetFName();
 	UE_LOG(LogTemp, Log, TEXT("Post Edit Change Chain, PropertyName: %s"), *PropertyName.ToString());
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
+}
+void APropertyDelegateTest::SessionStartup(TSharedRef<IConcertClientSession> InSession)
+{
+}
+void APropertyDelegateTest::SessionShutdown(TSharedRef<IConcertClientSession> InSession)
+{
+}
+void APropertyDelegateTest::MultiUserStartup()
+{
+	if (TSharedPtr<IConcertSyncClient> ConcertSyncClient = IMultiUserClientModule::Get().GetClient())
+	{
+		IConcertClientRef ConcertClient = ConcertSyncClient->GetConcertClient();
+
+		OnSessionStartupHandle = ConcertClient->OnSessionStartup().AddUObject(this, &APropertyDelegateTest::SessionStartup);
+		OnSessionShutdownHandle = ConcertClient->OnSessionShutdown().AddUObject(this, &APropertyDelegateTest::SessionShutdown);
+
+		TSharedPtr<IConcertClientSession> ConcertClientSession = ConcertClient->GetCurrentSession();
+		if (ConcertClientSession.IsValid())
+		{
+			SessionStartup(ConcertClientSession.ToSharedRef());
+		}
+	}
+}
+void APropertyDelegateTest::MultiUserShutdown()
+{
+	if (IMultiUserClientModule::IsAvailable())
+	{
+		if (TSharedPtr<IConcertSyncClient> ConcertSyncClient = IMultiUserClientModule::Get().GetClient())
+		{
+			IConcertClientRef ConcertClient = ConcertSyncClient->GetConcertClient();
+
+			TSharedPtr<IConcertClientSession> ConcertClientSession = ConcertClient->GetCurrentSession();
+			if (ConcertClientSession.IsValid())
+			{
+				SessionShutdown(ConcertClientSession.ToSharedRef());
+			}
+
+			ConcertClient->OnSessionStartup().Remove(OnSessionStartupHandle);
+			OnSessionStartupHandle.Reset();
+
+			ConcertClient->OnSessionShutdown().Remove(OnSessionShutdownHandle);
+			OnSessionShutdownHandle.Reset();
+		}
+	}
 }
 #endif //WITH_EDITOR

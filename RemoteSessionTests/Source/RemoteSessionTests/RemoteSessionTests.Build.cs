@@ -47,6 +47,9 @@ public class RemoteSessionTests : ModuleRules
 				"LevelEditor",
 				"UnrealEd",
 				"ViewportInteraction",
+				"Concert",
+				"ConcertSyncClient",
+				"MultiUserClient"
 			});
 		}
 	}

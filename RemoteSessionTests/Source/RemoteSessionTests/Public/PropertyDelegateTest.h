@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PropertyDelegateTest.generated.h"
 
+class IConcertClientSession;
+
 UCLASS(Blueprintable, BlueprintType)
 class REMOTESESSIONTESTS_API APropertyDelegateTest : public AActor
 {
@@ -13,6 +15,8 @@ class REMOTESESSIONTESTS_API APropertyDelegateTest : public AActor
 
 public:
 	APropertyDelegateTest();
+
+	virtual void BeginDestroy() override;
 
 	UFUNCTION(BlueprintSetter)
 		void SetEnabled(bool bNewEnabled);
@@ -35,5 +39,18 @@ public:
 	virtual void PreEditChange(FProperty* PropertyThatWillChange) override;
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
+
+	/* Concert Functions */
+	void SessionStartup(TSharedRef<IConcertClientSession> InSession);
+	void SessionShutdown(TSharedRef<IConcertClientSession> InSession);
+
+	void MultiUserStartup();
+	void MultiUserShutdown();
+
+	FDelegateHandle OnSessionStartupHandle;
+	FDelegateHandle OnSessionShutdownHandle;
+	TWeakPtr<IConcertClientSession> WeakSession;
+	/* End Concert Functions */
+
 #endif
 };
