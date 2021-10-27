@@ -5,6 +5,8 @@
 #include "IConcertClient.h"
 #include "IConcertSyncClient.h"
 #include "IMultiUserClientModule.h"
+
+#include "VPSettings.h"
 #endif //WITH_EDITOR
 
 APropertyDelegateTest::APropertyDelegateTest()
@@ -22,13 +24,14 @@ APropertyDelegateTest::APropertyDelegateTest()
 	}
 }
 
-void APropertyDelegateTest::BeginDestroy()
+//void APropertyDelegateTest::BeginDestroy()
+//{
+//	HandleDestruction();
+//}
+
+void APropertyDelegateTest::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-#if WITH_EDITOR
-
-	MultiUserShutdown();
-
-#endif //WITH_EDITOR
+	HandleDestruction();
 }
 
 void APropertyDelegateTest::SetEnabled(bool bNewEnabled)
@@ -37,6 +40,27 @@ void APropertyDelegateTest::SetEnabled(bool bNewEnabled)
 	bEnabled = bNewEnabled;
 }
 
+void APropertyDelegateTest::HandleDestruction()
+{
+	UE_LOG(LogTemp, Log, TEXT("Handle destruction"));
+
+#if WITH_EDITOR
+
+	MultiUserShutdown();
+
+#endif //WITH_EDITOR
+}
+bool APropertyDelegateTest::DoRolesMatch() const
+{
+#if WITH_EDITOR
+	UVPSettings* Settings = UVPSettings::GetVPSettings();
+	// We are in a valid camera role if the user has not assigned a role or the current VPSettings role matches the
+	// assigned role.
+	return !TestRole.IsValid() || Settings->GetRoles().HasTag(TestRole);
+#else
+	return true;
+#endif
+}
 void APropertyDelegateTest::BeginPlay()
 {
 	Super::BeginPlay();
@@ -48,11 +72,20 @@ void APropertyDelegateTest::Tick(float DeltaTime)
 }
 
 #if WITH_EDITOR
+void APropertyDelegateTest::OnMapChanged(UWorld* World, EMapChangeType ChangeType)
+{
+	UWorld* ComponentWorld = GetWorld();
+	if (World == ComponentWorld && ChangeType == EMapChangeType::TearDownWorld)
+	{
+		HandleDestruction();
+	}
+}
+
 void APropertyDelegateTest::PreEditChange(FProperty* PropertyThatWillChange)
 {
 	if (PropertyThatWillChange)
 	{
-		const FName PropertyName = PropertyThatWillChange->GetFName();
+		const FName PropertyName = PropertyThatWillChange->GetFName();		
 
 		UE_LOG(LogTemp, Log, TEXT("Pre Edit Change, PropertyName: %s"), *PropertyName.ToString());
 
@@ -75,6 +108,16 @@ void APropertyDelegateTest::PreEditChange(FProperty* PropertyThatWillChange)
 
 void APropertyDelegateTest::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
+	if (DoRolesMatch())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Roles match!"));
+	}
+	else
+	{
+
+		UE_LOG(LogTemp, Warning, TEXT("Roles don't match!"));
+	}
+
 	FProperty* Property = PropertyChangedEvent.MemberProperty;
 	if (Property && PropertyChangedEvent.ChangeType != EPropertyChangeType::Interactive)
 	{
@@ -105,12 +148,17 @@ void APropertyDelegateTest::PostEditChangeChainProperty(FPropertyChangedChainEve
 	UE_LOG(LogTemp, Log, TEXT("Post Edit Change Chain, PropertyName: %s"), *PropertyName.ToString());
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
 }
+
 void APropertyDelegateTest::SessionStartup(TSharedRef<IConcertClientSession> InSession)
 {
+	WeakSession = InSession;
 }
+
 void APropertyDelegateTest::SessionShutdown(TSharedRef<IConcertClientSession> InSession)
 {
+	WeakSession.Reset();
 }
+
 void APropertyDelegateTest::MultiUserStartup()
 {
 	if (TSharedPtr<IConcertSyncClient> ConcertSyncClient = IMultiUserClientModule::Get().GetClient())
@@ -127,25 +175,32 @@ void APropertyDelegateTest::MultiUserStartup()
 		}
 	}
 }
+
 void APropertyDelegateTest::MultiUserShutdown()
 {
+	UE_LOG(LogTemp, Log, TEXT("Shutting down multi-user client"));
+
 	if (IMultiUserClientModule::IsAvailable())
 	{
+		UE_LOG(LogTemp, Log, TEXT("Client module is available"));
 		if (TSharedPtr<IConcertSyncClient> ConcertSyncClient = IMultiUserClientModule::Get().GetClient())
 		{
+			UE_LOG(LogTemp, Log, TEXT("Concert Sync retrieved"));
 			IConcertClientRef ConcertClient = ConcertSyncClient->GetConcertClient();
-
+			UE_LOG(LogTemp, Log, TEXT("Concert client was retrieved"));
 			TSharedPtr<IConcertClientSession> ConcertClientSession = ConcertClient->GetCurrentSession();
+			UE_LOG(LogTemp, Log, TEXT("Concert session was retrieved")); 
 			if (ConcertClientSession.IsValid())
 			{
+				UE_LOG(LogTemp, Log, TEXT("Concert session is valid, calling session shutdown directly..."));
 				SessionShutdown(ConcertClientSession.ToSharedRef());
 			}
-
 			ConcertClient->OnSessionStartup().Remove(OnSessionStartupHandle);
 			OnSessionStartupHandle.Reset();
-
+			UE_LOG(LogTemp, Log, TEXT("Removed session startup handle"));
 			ConcertClient->OnSessionShutdown().Remove(OnSessionShutdownHandle);
 			OnSessionShutdownHandle.Reset();
+			UE_LOG(LogTemp, Log, TEXT("Removed session shutdown handle"));
 		}
 	}
 }

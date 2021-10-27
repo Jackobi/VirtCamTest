@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayTagContainer.h"
 #include "PropertyDelegateTest.generated.h"
 
 class IConcertClientSession;
@@ -16,7 +17,8 @@ class REMOTESESSIONTESTS_API APropertyDelegateTest : public AActor
 public:
 	APropertyDelegateTest();
 
-	virtual void BeginDestroy() override;
+	//virtual void BeginDestroy() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION(BlueprintSetter)
 		void SetEnabled(bool bNewEnabled);
@@ -27,10 +29,18 @@ public:
 		bool bEnabled;
 	UPROPERTY(EditAnywhere, Category = "Test")
 		bool bOtherTest;
-		
+	UPROPERTY(EditAnywhere)
+		FGameplayTag TestRole;
+
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void HandleDestruction();
+
+	bool DoRolesMatch() const;
 
 public:
 	// Called every frame
@@ -38,6 +48,8 @@ public:
 public:
 
 #if WITH_EDITOR
+	void OnMapChanged(UWorld* World, EMapChangeType ChangeType);
+
 	virtual void PreEditChange(FProperty* PropertyThatWillChange) override;
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
