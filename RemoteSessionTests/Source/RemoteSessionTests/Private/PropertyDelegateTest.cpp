@@ -111,10 +111,15 @@ void APropertyDelegateTest::PostEditChangeProperty(FPropertyChangedEvent& Proper
 	if (DoRolesMatch())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Roles match!"));
+
+		if (!BlankObj)
+		{
+			BlankObj = NewObject<UTestObject>(this, "Blank Object");
+		}
 	}
 	else
 	{
-
+		BlankObj = nullptr;
 		UE_LOG(LogTemp, Warning, TEXT("Roles don't match!"));
 	}
 

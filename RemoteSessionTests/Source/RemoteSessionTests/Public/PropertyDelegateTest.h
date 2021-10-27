@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameplayTagContainer.h"
+#include "TestObject.h"
 #include "PropertyDelegateTest.generated.h"
 
 class IConcertClientSession;
@@ -31,7 +32,8 @@ public:
 		bool bOtherTest;
 	UPROPERTY(EditAnywhere)
 		FGameplayTag TestRole;
-
+	UPROPERTY(Transient, VisibleAnywhere)
+		UTestObject* BlankObj;
 	
 
 protected:

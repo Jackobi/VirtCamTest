@@ -154,4 +154,14 @@
       <Filter>Source\RemoteSessionTests\Public</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\RemoteSessionTests\Public\TestObject.h">
+      <Filter>Source\RemoteSessionTests\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\RemoteSessionTests\Private\TestObject.cpp">
+      <Filter>Source\RemoteSessionTests\Private</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
